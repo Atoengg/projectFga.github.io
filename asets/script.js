@@ -1,110 +1,104 @@
-
-let prevNumber = ''
-let calculatorOperation = ''
-let curenttNumber = '0'
+let prevNumber = '';
+let calculatorOperation = '';
+let currentNumber = '0';
 
 const calculatorScreen = document.querySelector('.calculator-screen');
 
 const updateScreen = (number) => {
-    calculatorScreen.value = number
-} 
+  calculatorScreen.value = number;
+};
 
 const inputNumber = (number) => {
-    if (curenttNumber === '0') {
-        curenttNumber = number
-    } else{
-        curenttNumber += number
-    }
-}
+  if (currentNumber === '0') {
+    currentNumber = number;
+  } else {
+    currentNumber += number;
+  }
+};
 
-const numbers = document.querySelectorAll(".number");
+const numbers = document.querySelectorAll('.number');
 
 numbers.forEach((number) => {
-    number.addEventListener('click', (event) =>{
-        inputNumber(event.target.value)
-        updateScreen(curenttNumber)
-    })
-})
+  number.addEventListener('click', (event) => {
+    inputNumber(event.target.value);
+    updateScreen(currentNumber);
+  });
+});
 
-// operator
-const inputOperator = (operator) =>{
+// Operator
+const inputOperator = (operator) => {
+  if (calculatorOperation === '') {
+    prevNumber = currentNumber;
+  }
 
-    if (calculatorOperation === '') {
-        prevNumber = curenttNumber
-    }
+  calculatorOperation = operator;
+  currentNumber = '0';
+  updateScreen(calculatorOperation); // Menampilkan nilai operator pada layar kalkulator
+};
 
-    calculatorOperation = operator
-    curenttNumber = '0'
-}
-
-const operators = document.querySelectorAll('.operator')
+const operators = document.querySelectorAll('.operator');
 
 operators.forEach((operator) => {
-    operator.addEventListener('click', (event) =>{
-        inputOperator(event.target.value)
-    })
-})
+  operator.addEventListener('click', (event) => {
+    inputOperator(event.target.value);
+  });
+});
 
-
-// equal-sign
-const equalSign = document.querySelector('.equal-sign')
+// Equal sign
+const equalSign = document.querySelector('.equal-sign');
 
 const calculate = () => {
-    let result = ''
-    switch (calculatorOperation) {
-        case "+":
-            result = parseFloat(prevNumber) + parseFloat(curenttNumber)
-            break;
-        case "-":
-            result = prevNumber - curenttNumber
-            break;
-        case "*":
-            result = prevNumber * curenttNumber
-            break;
-        case "/":
-            result = prevNumber / curenttNumber
-            break;
-        default:
-            return;
-    }
-    curenttNumber = result
-    calculatorOperation = ''
-}
+  let result = '';
+  switch (calculatorOperation) {
+    case '+':
+      result = parseFloat(prevNumber) + parseFloat(currentNumber);
+      break;
+    case '-':
+      result = prevNumber - currentNumber;
+      break;
+    case '*':
+      result = prevNumber * currentNumber;
+      break;
+    case '/':
+      result = prevNumber / currentNumber;
+      break;
+    default:
+      return;
+  }
+  currentNumber = result;
+  calculatorOperation = '';
+  updateScreen(currentNumber);
+};
 
-equalSign.addEventListener('click', () =>{
-    calculate()
-    updateScreen(curenttNumber)
-})
+equalSign.addEventListener('click', () => {
+  calculate();
+});
 
-//  mengaktifkan btn clear all
+// Clear all
+const clearBtn = document.querySelector('.all-clear');
 
-const clearBtn = document.querySelector('.all-clear')
-
-const clearAll = () =>{
-    prevNumber = ''
-    calculatorOperation = ''
-    curenttNumber = '0'
-}
+const clearAll = () => {
+  prevNumber = '';
+  calculatorOperation = '';
+  currentNumber = '0';
+  updateScreen(currentNumber);
+};
 
 clearBtn.addEventListener('click', () => {
-    clearAll()
-    updateScreen(curenttNumber)
-})
+  clearAll();
+});
 
+// Decimal
+const decimal = document.querySelector('.decimal');
 
-// kalkulasi angka decimal
-const desimal = document.querySelector('.decimal')
+const inputDecimal = (dot) => {
+  if (currentNumber.includes('.')) {
+    return;
+  }
+  currentNumber += dot;
+};
 
-inputDesimal = (dot) =>{
-    if (curenttNumber.includes('.')) {
-        return
-    }
-    curenttNumber += dot
-}
-
-desimal.addEventListener('click', (event) =>{
-    inputDesimal(event.target.value)
-    updateScreen(curenttNumber)
-})
-
-
+decimal.addEventListener('click', (event) => {
+  inputDecimal(event.target.value);
+  updateScreen(currentNumber);
+});
